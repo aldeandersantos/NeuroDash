@@ -43,6 +43,10 @@ Thumbs.db
 *.ppm
 *.png.zip
 
+# Modelos treinados
+models/
+*.zip
+
 # Arquivos de cache de teste
 .coverage
 htmlcov/

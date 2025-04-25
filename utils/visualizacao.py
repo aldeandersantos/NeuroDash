@@ -11,5 +11,9 @@ class GameVisualizer:
         fps_text = self.font.render(f"FPS: {fps:.2f}", True, (0, 0, 0))
         self.screen.blit(fps_text, (10, 10))
 
+    def display_score(self, score):
+        score_text = self.font.render(f"Pontuação: {score}", True, (0, 0, 0))
+        self.screen.blit(score_text, (10, 40))
+
     def tick(self):
-        self.clock.tick(60)  # FPS
+        self.clock.tick(60)

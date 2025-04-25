@@ -10,8 +10,8 @@ class JogoComObstaculos(gym.Env):
     def __init__(self, render_mode=None):
         super(JogoComObstaculos, self).__init__()
 
-        self.action_space = spaces.Discrete(3)  # 0 = parar, 1 = direita, 2 = pular
-
+        self.action_space = spaces.Discrete(3)
+        
         self.observation_space = spaces.Box(
             low=np.array([0, -1, 0, 0, 0]),
             high=np.array([1, 1, 1, 1, 1]),
@@ -94,41 +94,33 @@ class JogoComObstaculos(gym.Env):
     def create_obstacle(self, min_x):
         x = min_x + random.randint(0, 200)
         height = random.randint(30, 80)
-        y = self.height - height  # Obstáculo sempre no chão
+        y = self.height - height
         width = random.randint(30, 50)
         return {'x': x, 'y': y, 'width': width, 'height': height}
 
     def step(self, action):
-        # --- Lógica de Ação e Física ---
         is_on_ground = (self.agent_y >= self.ground_y)
         
-        # Aplicar ação apenas se estiver no chão ou se não for ação de pulo
         if action == 2 and is_on_ground:
-            self.agent_vy = -self.jump_power  # Velocidade negativa para subir (sistema de coordenadas invertido)
+            self.agent_vy = -self.jump_power
         
-        # Aplicar gravidade sempre
         self.agent_vy += self.gravity
         
-        # Limitar a velocidade máxima de queda
         max_fall_speed = 15
         if self.agent_vy > max_fall_speed:
             self.agent_vy = max_fall_speed
             
-        # Atualizar posição Y
         self.agent_y += self.agent_vy
         
-        # Verificar colisão com o chão
         if self.agent_y >= self.ground_y:
             self.agent_y = self.ground_y
             self.agent_vy = 0
             
-        # Definir altura máxima (teto)
-        min_height = 50  # Distância mínima do topo da tela
+        min_height = 50
         if self.agent_y < min_height:
             self.agent_y = min_height
-            self.agent_vy = 0  # Parar movimento quando bate no teto
+            self.agent_vy = 0
             
-        # --- Atualizar Obstáculos ---
         last_obstacle_x = 0
         if self.obstacles:
             last_obstacle_x = max(o['x'] for o in self.obstacles)
@@ -144,14 +136,14 @@ class JogoComObstaculos(gym.Env):
             self.obstacles.append(new_obstacle)
 
         terminated = False
-        reward = 0.1  # Recompensa pequena por sobreviver ao passo
+        reward = 0.1
 
         agent_rect = pygame.Rect(self.agent_x, self.agent_y, self.agent_width, self.agent_height)
         for obstacle in self.obstacles:
             obstacle_rect = pygame.Rect(obstacle['x'], obstacle['y'], obstacle['width'], obstacle['height'])
             if agent_rect.colliderect(obstacle_rect):
                 terminated = True
-                reward = -10  # Penalidade grande por colisão
+                reward = -10
                 break
 
         observation = self._get_obs()
@@ -160,9 +152,7 @@ class JogoComObstaculos(gym.Env):
         if self.render_mode == "human":
             self._render_frame()
 
-        truncated = False
-
-        return observation, reward, terminated, truncated, info
+        return observation, reward, terminated, False, info
 
     def render(self):
         if self.render_mode == "human":
@@ -172,7 +162,7 @@ class JogoComObstaculos(gym.Env):
         if self.screen is None or self.clock is None:
             return
 
-        self.screen.fill((135, 206, 235))  # Azul céu
+        self.screen.fill((135, 206, 235))
 
         pygame.draw.rect(self.screen, (34, 139, 34), (0, self.ground_y + self.agent_height, self.width, self.height - (self.ground_y + self.agent_height)))
 
