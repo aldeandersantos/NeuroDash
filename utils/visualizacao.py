@@ -15,5 +15,9 @@ class GameVisualizer:
         score_text = self.font.render(f"Pontuação: {score}", True, (0, 0, 0))
         self.screen.blit(score_text, (10, 40))
 
+    def display_text(self, text, position):
+        rendered_text = self.font.render(text, True, (0, 0, 0))
+        self.screen.blit(rendered_text, position)
+
     def tick(self):
         self.clock.tick(60)
