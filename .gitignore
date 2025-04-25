@@ -1,0 +1,53 @@
+# Arquivos de bytecode Python
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Distribuição / empacotamento
+dist/
+build/
+*.egg-info/
+*.egg
+
+# Ambientes virtuais
+venv/
+.env
+.venv
+
+# Logs e bases de dados
+*.log
+*.sqlite
+*.db
+
+# Arquivos de sistema operacional
+.DS_Store
+Thumbs.db
+
+# Arquivos temporários
+*.swp
+*~
+*.bak
+*.tmp
+
+# Arquivos IDE
+.idea/
+.vscode/
+*.sublime-project
+*.sublime-workspace
+.spyderproject
+.spyproject
+.ropeproject
+
+# Arquivos específicos do Pygame
+*.pgm
+*.ppm
+*.png.zip
+
+# Arquivos de cache de teste
+.coverage
+htmlcov/
+.pytest_cache/
+.tox/
+
+# Arquivos de build específicos de aplicações
+*.spec
